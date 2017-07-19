@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>exam</title>
+<link rel="stylesheet" href="common.css" />
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//첫번째부터
+		var exam1Func = function(){
+			var wrap = $('.exam_wrap').eq(0),
+				listWrap = wrap.find('.exam_q'),
+				listChid = listWrap.find('li'),
+				btn = wrap.find('button'),
+				currentIdx = 0;
+
+			var setColor = function(){
+				listChid.eq(currentIdx).css('background-color','yellow');
+
+				if(currentIdx < listChid.length){
+					currentIdx++;
+				}
+			}
+			btn.on('click',setColor);
+		}
+		exam1Func();
+
+		//마지막부터
+		var exam2Func = function(){
+			var wrap = $('.exam_wrap').eq(1),
+				listWrap = wrap.find('.exam_q'),
+				listChid = listWrap.find('li'),
+				btn = wrap.find('button'),
+				currentIdx = listChid.length-1;
+
+			var setColor = function(){
+				listChid.eq(currentIdx).css('background-color','yellow');
+
+				if(currentIdx >= 0){
+					currentIdx--;
+				}
+			}
+
+			btn.on('click',setColor);
+		}
+		exam2Func();
+
+		//첫번째부터, 이전 초기화
+		var exam3Func = function(){
+			var wrap = $('.exam_wrap').eq(2),
+				listWrap = wrap.find('.exam_q'),
+				listChid = listWrap.find('li'),
+				btn = wrap.find('button'),
+				currentIdx = 0,
+				beforeIdx = currentIdx;
+
+			var setColor = function(){
+				listChid.eq(beforeIdx).css('background-color','');
+				listChid.eq(currentIdx).css('background-color','yellow');
+				beforeIdx = currentIdx;
+			}
+
+			var nextFunc = function(){
+				if($(this).text() === '다음'){
+					if(currentIdx < listChid.length-1){
+						currentIdx++;
+					}
+				}
+				setColor();
+			}
+
+			var prevFunc = function(){
+				if($(this).text() === '이전'){
+					if(currentIdx > 0){
+						currentIdx--;
+					}
+				}
+				setColor();
+			}
+
+			btn.on('click',nextFunc);
+			btn.on('click',prevFunc);
+		}
+		exam3Func();
+
+		//첫번째부터, 이전 초기화, loop, class제어
+		var exam4Func = function(){
+			var wrap = $('.exam_wrap').eq(3),
+				listWrap = wrap.find('.exam_q'),
+				listChid = listWrap.find('li'),
+				btn = wrap.find('button'),
+				currentIdx = 0,
+				beforeIdx = currentIdx;
+
+			var setColor = function(){
+				listChid.eq(beforeIdx).removeClass('active');
+				listChid.eq(currentIdx).addClass('active');
+				beforeIdx = currentIdx;
+			}
+
+			var changeClass = function(){
+				if($(this).text() === '다음'){
+					currentIdx++;
+
+					if(currentIdx > listChid.length-1){
+						currentIdx = 0;
+					}
+				}else if($(this).text() === '이전'){
+					currentIdx--;
+
+					if(currentIdx < 0){
+						currentIdx = listChid.length-1;
+					}
+				}
+				setColor();
+
+			}
+
+			btn.on('click',changeClass);
+		}
+		exam4Func();
+		
+	});
+</script>	
+</head>
+<body>
+<!-- wrapper [s] -->
+<div id="wrapper">
+	<!-- header [s] -->
+	<div id="header">
+	</div>
+	<!-- header [e] -->
+	<hr />
+	<!-- container [s] -->
+	<div id="container">
+		<div class="exam_wrap">
+			<h1>Q. 첫번째부터 순서대로 선택하세요 (style 제어)</h1>
+			<div class="exam_q"><!-- 부모 -->
+				<ul>
+					<li>one</li>
+					<li>two</li>
+					<li>three</li>
+					<li>four</li>
+					<li>five</li>
+					<li>six</li>
+					<li>seven</li>
+					<li>eight</li>
+				</ul>
+			</div>
+			<button type="button">다음</button>
+		</div>
+		<div class="exam_wrap">
+			<h1>Q. 마지막부터 역순대로 선택하세요 (style 제어)</h1>
+			<div class="exam_q"><!-- 부모 -->
+				<ul>
+					<li>one</li>
+					<li>two</li>
+					<li>three</li>
+					<li>four</li>
+					<li>five</li>
+					<li>six</li>
+					<li>seven</li>
+				</ul>
+			</div>
+			<button type="button">이전</button>
+		</div>
+		<div class="exam_wrap">
+			<h1>Q. 첫번째부터 순서대로 선택하고, 전에 선택했던 Element의 배경색을 지우세요 (style 제어)</h1>
+			<div class="exam_q"><!-- 부모 -->
+				<ul>
+					<li style="background-color:yellow">one</li>
+					<li>two</li>
+					<li>three</li>
+					<li>four</li>
+					<li>five</li>
+					<li>six</li>
+					<li>seven</li>
+					<li>eight</li>
+					<li>nine</li>
+				</ul>
+			</div>
+			<button type="button">이전</button>
+			<button type="button">다음</button>
+		</div>
+        <div class="exam_wrap">
+            <h1>Q. 첫번째부터 순서대로 선택하고, 전에 선택했던 Element의 배경색을 지우시고, 무한loop 돌게 하세요 (클래스 제어)</h1>
+            <div class="exam_q"><!-- 부모 -->
+                <ul>
+                    <li class="active">one</li>
+                    <li>two</li>
+                    <li>three</li>
+                    <li>four</li>
+                    <li>five</li>
+                    <li>six</li>
+                    <li>seven</li>
+                    <li>eight</li>
+                    <li>nine</li>
+                </ul>
+            </div>
+            <button type="button">이전</button>
+            <button type="button">다음</button>
+        </div>
+	</div>
+	<!-- container [e] -->
+	<hr />
+	<!-- footer [s] -->
+	<div id="footer">
+	</div>
+	<!-- footer [e] -->
+</div>
+<!-- wrapper [e] -->
+</body>
+</html>
