@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>exam</title>
+<link rel="stylesheet" href="common.css" />
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script>
+$(function(){
+
+	// exam1 [s]
+	// var exam1 = $('.exam_q').eq(0);
+	// exam1.append('<input type="checkbox">');
+	// exam1 [e]
+
+	// var exam3 = $('.exam_q').eq(2);
+	// exam3.append('8 X 1 = 8 <br>');
+	
+	//exam1
+	var inputTags =[],
+		insertCont = $('.exam_wrap').eq(0).find('.exam_q'),		
+		examIdx1 = 0;
+
+	while(examIdx1<5){
+		inputTags.push('<input type="text">');
+		examIdx1++;
+	}
+	insertCont.get(0).innerHTML = inputTags.join('');
+
+
+	//exam2
+	var inputTags2 = [],
+		insertCont2 = $('.exam_wrap').eq(1).find('.exam_q');
+
+	for(var i=0; i<5; i++){
+		if(i % 2 == 0){
+			inputTags2.push('<input type="text">');
+		}else{
+			inputTags2.push('<input type="checkbox">');
+		}
+	}
+	insertCont2.get(0).innerHTML = inputTags2.join('');
+
+
+	//exam3
+	var inputTags3 = [],
+		insertCont3 = $('.exam_wrap').eq(2).find('.exam_q');
+	
+	inputTags3.push('<ul>');
+	for(var i=1; i<=9; i++){
+		inputTags3.push('<li>');
+		inputTags3.push('8 * '+i+' = '+(8*i));
+		inputTags3.push('</li>');
+	}inputTags3.push('</ul>');
+	insertCont3.get(0).innerHTML = inputTags3.join('');
+
+
+	//exam4
+	var inputTags4 = [],
+		insertCont4 = $('.exam_wrap').eq(3).find('.exam_q'),
+		examIdx2 = 2;
+	
+	while(examIdx2<10){
+		inputTags4.push('<p>'+examIdx2+' 단</<p>');
+		inputTags4.push('<ul>');
+		for(var i=1; i<=9; i++){
+			inputTags4.push('<li>');
+			inputTags4.push(examIdx2+' * '+i+' = '+(examIdx2*i));
+			inputTags4.push('</li>');
+		}inputTags4.push('</ul>');
+		examIdx2++;
+	}
+	insertCont4.get(0).innerHTML = inputTags4.join('');
+
+	var str = '';
+	for(var i=2; i<=9; i++){
+		for(var j=1; j<=9;j++){
+			str += i+" * "+j+" = "+i*j;
+			if(j==9){
+				str += "<br/>";
+
+			}else{
+				str +=" / "
+			}
+		}
+	}
+	insertCont4.append('<br/><br/><div>'+str+'</div>');
+
+
+
+
+});
+</script>
+</head>
+<body>
+<!-- wrapper [s] -->
+
+<div id="example">
+    <span>A child element</span>
+</div>
+<div id="wrapper">
+	<!-- header [s] -->
+	<div id="header">
+	</div>
+	<!-- header [e] -->
+	<hr />
+	<!-- container [s] -->
+	<div id="container">
+		<div class="exam_wrap">
+			<h1>Q. while 문으로 5개의 input 을 출력하세요.</h1>
+			<div class="exam_q">
+			</div>
+		</div>
+		<div class="exam_wrap">
+			<h1>Q. for 문으로 5개의 input 을 만들되, 짝수는 text / 홀수는 checkbox 를 출력하세요.</h1>
+			<div class="exam_q">
+			</div>
+		</div>
+		<div class="exam_wrap">
+			<h1>Q. for 문으로 구구단 8단을 출력하세요.</h1>
+			<div class="exam_q">
+			</div>
+		</div>
+		<div class="exam_wrap">
+			<h1>Q. for/while 문 2개로 구구단을 출력하세요.</h1>
+			<div class="exam_q">
+			</div>
+		</div>
+	</div>
+	<!-- container [e] -->
+	<hr />
+	<!-- footer [s] -->
+	<div id="footer">
+	</div>
+	<!-- footer [e] -->
+</div>
+<!-- wrapper [e] -->
+</body>
+</html>
