@@ -62,7 +62,7 @@ $(function(){
 		examIdx2 = 2;
 	
 	while(examIdx2<10){
-		inputTags4.push('<p>'+examIdx2+' 단</<p>');
+		inputTags4.push('<p>'+examIdx2+' 단</p>');
 		inputTags4.push('<ul>');
 		for(var i=1; i<=9; i++){
 			inputTags4.push('<li>');
@@ -75,17 +75,17 @@ $(function(){
 
 	var str = '';
 	for(var i=2; i<=9; i++){
+		str += '<p>'+i+'단</p>';
+		str += '<ul>';
 		for(var j=1; j<=9;j++){
-			str += i+" * "+j+" = "+i*j;
+			str += '<li>'+i+" * "+j+" = "+i*j+'</li>';
 			if(j==9){
-				str += "<br/>";
+				str += "</ul>";
 
-			}else{
-				str +=" / "
 			}
 		}
 	}
-	insertCont4.append('<br/><br/><div>'+str+'</div>');
+	insertCont4.append('<br/><br/>'+str);
 
 
 
