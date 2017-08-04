@@ -113,20 +113,30 @@ $(document).ready (function(){
 			return Math.floor(Math.random()*this.avatarArr.length);
 		},
 		initAvatar : function(){
-			this.currentIndex = this.setRandom();
-			this.slide.eq(this.avatarArr[this.currentIndex]).show().siblings().hide();
-			this.oldIndex = this.currentIndex;
-			this.avatarArr.splice(this.oldIndex,1);
+			this.random = this.setRandom();
+			this.currentIndex = this.avatarArr[this.random];
+			if(this.oldIndex === this.currentIndex){
+				this.initAvatar();
+			}else{
+				this.viewFunc();
+			}
 		},
 		bindEvents : function(){
 			this.btn.on('click', $.proxy(this.changeFunc, this));
 		},
+		viewFunc : function(){
+			this.slide.eq(this.currentIndex).show().siblings().hide();
+		},
 		changeFunc : function () {
+			this.avatarArr.splice(this.random,1);
+			this.oldIndex = this.currentIndex;
 			this.initAvatar();
+			
 			if(!this.avatarArr.length){
 				this.setArray();
+				this.initAvatar();
 			}
-			console.log(this.avatarArr);
+			console.log(this.currentIndex, this.random, this.oldIndex);
 		}
 	};
 	avatarChange.init();
