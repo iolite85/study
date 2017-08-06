@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi"> -->
+<title>bear</title>
+<link rel="stylesheet" type="text/css" href="css/coca.css">
+<script type="text/javascript" src="../js/lib/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+<div class="evt_wrap">
+	<div class="evt_tit">
+		<div class="tit_area">
+			<h2 class="blind">1등 곰도 맞추고 100% 경품까지 폴라베어를 잡아라!</h2>
+		</div>
+	</div>
+	
+	<div class="evt_ct">
+		<div class="evt_area">
+			<p class="blind">100% 당첨! 가장먼저 도착하는 폴라베어를 맞춰주세요</p>
+			<ul class="bxlst" id="clickLst">
+			<li class="rabx">
+				<input type="radio" name="beautybox" id="bx"/>
+				<label for="bx"><span class="blind">스키타는 베어</span></label>
+			</li>
+			<li class="rabx">
+				<input type="radio" name="beautybox" id="bx2"/>
+				<label for="bx2"><span class="blind">보드타는 베어</span></label>
+			</li>
+			<li class="rabx">
+				<input type="radio" name="beautybox" id="bx3"/>
+				<label for="bx3"><span class="blind">스케이트 베어</span></label>
+			</li>
+			</ul>
+			<a href="#" class="btn btn_app">choice</a>
+		</div>
+	</div>
+	
+	<div class="evt_ct2">
+		<ul class="game_area sp" id="gameLst">
+		<li class="lane"><div class="sp gom"></div></li>
+		<li class="lane2"><div class="sp gom"></div></li>
+		<li class="lane3"><div class="sp gom"></div></li>
+		</ul>
+	</div>
+
+	<div style="height:2000px"></div>
+	
+</div>
+<script type="text/javascript">
+$(document).ready (function(){
+	var coca = {
+		init : function(){
+			this.setElements();
+			this.initOption();
+			this.bindEvents();
+		},
+		setElements : function(){
+			this.wrap = $('.evt_wrap');
+			this.btn = this.wrap.find('.btn_app');
+			this.selectWrap = this.wrap.find('.bxlst');
+			this.selectInput = this.selectWrap.find('input[type=radio]');
+			this.resultWrap = this.wrap.find('.game_area');
+			this.resultBear = this.resultWrap.children();
+		},
+		initOption : function(){
+			this.joinEvent = false;
+			this.selectBear = false;
+			this.randomEvent = false; //선택한 인덱스를 제외한 인덱스 랜덤
+		},
+		bindEvents : function(){
+			this.selectInput.on('change', $.proxy(this.clickBear, this));
+			this.btn.on('click', $.proxy(this.clickFunc, this));
+		},
+		clickFunc : function () {
+			if(!this.selectBear){
+				alert('곰을 선택해 주세요.');
+			}else if(this.joinEvent){
+				alert('이미 참여하셨습니다.');
+			}else{
+				this.moveFunc();
+			}
+		},
+		clickBear : function(e){
+			this.selectBear = true;
+			this.bearIdx = $(e.currentTarget).parent().index();
+		},
+		setRandom : function(){
+			this.randomIdx = Math.floor(Math.random() * this.resultBear.length);
+			//console.log(this.randomIdx);
+		},
+		randomFunc : function(){
+			this.setRandom();
+			if(this.randomIdx === this.bearIdx){
+				this.randomFunc();
+			}else{
+				this.bearIdx = this.randomIdx;
+			}
+		},
+		moveFunc : function(){
+			$('html, body').animate({scrollTop:this.btn.offset().top}, 300);
+			this.resultBear.eq(this.bearIdx).find('.gom').delay(400).animate({
+				transition : 'all ' + 400/1000 + 's ease',
+				top: '110px'
+			});
+			if(this.randomEvent){
+				this.randomFunc();
+			}
+			setTimeout($.proxy(this.endEvent, this), 800);
+		},
+		endEvent : function(){
+			this.joinEvent = true;
+			this.resultBear.eq(this.bearIdx).addClass('winlane');
+		}
+	};
+	coca.init();
+});
+</script>
+</body>
+</html>
