@@ -66,7 +66,7 @@ $(document).ready (function(){
 		initOption : function(){
 			this.joinEvent = false;
 			this.selectBear = false;
-			this.randomEvent = false; //선택한 인덱스를 제외한 인덱스 랜덤
+			this.randomEvent = true; //선택한 인덱스를 제외한 인덱스 랜덤
 		},
 		bindEvents : function(){
 			this.selectInput.on('change', $.proxy(this.clickBear, this));
@@ -85,27 +85,27 @@ $(document).ready (function(){
 			this.selectBear = true;
 			this.bearIdx = $(e.currentTarget).parent().index();
 		},
-		setRandom : function(){
-			this.randomIdx = Math.floor(Math.random() * this.resultBear.length);
-			//console.log(this.randomIdx);
-		},
 		randomFunc : function(){
-			this.setRandom();
-			if(this.randomIdx === this.bearIdx){
-				this.randomFunc();
-			}else{
-				this.bearIdx = this.randomIdx;
+			this.arr = [];
+			for(var i=0; i<this.resultBear.length; i++){
+				this.arr.push(i);
 			}
+
+			this.arr.splice(this.bearIdx,1);
+			this.randomIdx = Math.floor(Math.random() * this.arr.length);
+			this.bearIdx = this.arr[this.randomIdx];
+			console.log(this.bearIdx);
 		},
 		moveFunc : function(){
+			if(this.randomEvent){
+				this.randomFunc();
+			}
 			$('html, body').animate({scrollTop:this.btn.offset().top}, 300);
 			this.resultBear.eq(this.bearIdx).find('.gom').delay(400).animate({
 				transition : 'all ' + 400/1000 + 's ease',
 				top: '110px'
 			});
-			if(this.randomEvent){
-				this.randomFunc();
-			}
+			
 			setTimeout($.proxy(this.endEvent, this), 800);
 		},
 		endEvent : function(){
