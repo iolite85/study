@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>exam - sort</title>
+<style>
+/* temporary css */
+*{margin:0;padding:0}
+body{font-size:14px;font-family:"나눔고딕",NanumGothic,"굴림",Gulim,Sans-serif;line-height:1.5}
+h1,h2,h3,h4,h5,h6{font-size:14px}
+ul,li{list-style:none}
+button{font-size:14px;font-family:"나눔고딕",NanumGothic,"굴림",Gulim,Sans-serif;line-height:1.5;cursor:pointer}
+button::-moz-focus-inner{padding:0;border:0}
+p{margin-bottom:30px;padding-bottom:10px;border-bottom:2px solid #da0707;font-size:20px}
+#container{width:880px;margin:0 auto}
+table{width:100%;background-color:#efefef;table-layout:fixed;border-collapse:collapse}
+th,td{height:50px;text-align:center}
+.num{text-align:center}
+.tit{padding-left:10px}
+.name{text-align:center}
+.btn_sort{display:block;margin:0 auto}
+/* //temporary css */
+</style>
+</head>
+<body>
+<!-- wrapper [s] -->
+<div id="wrapper">
+    <!-- header [s] -->
+    <div id="header">@</div>
+    <!-- header [e] -->
+    <hr />
+    <!-- container [s] -->
+    <div id="container">
+        <table>
+        <thead>
+        <tr>
+        <th>번호<button type="button" class="btn_sort">정렬</button></th>
+        <th>제목<button type="button" class="btn_sort">정렬</button></th>
+        <th>작성자<button type="button" class="btn_sort">정렬</button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>1</td>
+        <td>ccccc</td>
+        <td>하이브랩</td>
+        </tr>
+        <tr>
+        <td>2</td>
+        <td>zzzzz</td>
+        <td>사내교육</td>
+        </tr>
+        <tr>
+        <td>3</td>
+        <td>aaaa</td>
+        <td>개발1팀</td>
+        </tr>
+        <tr>
+        <td>4</td>
+        <td>ffff</td>
+        <td>김민재</td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+    <!-- container [e] -->
+    <hr />
+    <!-- footer [s] -->
+    <div id="footer">@</div>
+    <!-- footer [e] -->
+<!-- [ Javascript Area ] -->
+<!-- Libs -->
+<script src="../js/lib/jquery-1.12.4.min.js"></script>
+<script>
+(function (win, $) {
+    'use strict';
+	var sortTable = {
+		init : function () {
+			this.setElements();
+			this.bindEvents();
+		},
+		setElements : function () {
+			this.tableBx = $('table');
+			this.tableHead = this.tableBx.find('thead tr');
+			this.tableBody = this.tableBx.find('tbody');
+			this.sortBtnNum = this.tableHead.children().eq(0).find('button');
+			this.sortBtnTitle = this.tableHead.children().eq(1).find('button');
+			this.sortBtnWriter = this.tableHead.children().eq(2).find('button');
+		},
+		bindEvents : function () {
+			this.sortBtnNum.on('click', $.proxy(this.sortNumFunc, this));
+			this.sortBtnTitle.on('click', $.proxy(this.sortTitleFunc, this));
+			this.sortBtnWriter.on('click', $.proxy(this.sortWriterFunc, this));
+		},
+		sortData : function (num) {
+			var textArray = [],
+				originArray = [];
+				
+			this.tableBody.children().filter(function () {
+				var txt = $.trim($(this).find('td').eq(num).text());
+				textArray.push(txt);
+				originArray.push(txt);
+			});
+			//textArray.sort();
+			if(num === 0){ 
+                textArray.sort(function (a, b) {
+                    return a - b;
+                });
+            }else{
+                textArray.sort();
+            }
+			this.sortArray = textArray;
+			this.originArray = originArray;
+			//console.log(this.sortArray);
+		},
+
+		sortNumFunc : function (e) {
+			var targetIdx = $(e.currentTarget).parent().index();
+			this.sortData(targetIdx);
+			this.viewLayout();
+		},
+		sortTitleFunc : function (e) {
+			var targetIdx = $(e.currentTarget).parent().index();
+			this.sortData(targetIdx);
+			this.viewLayout();
+		},
+		sortWriterFunc : function (e) {
+			var targetIdx = $(e.currentTarget).parent().index();
+			this.sortData(targetIdx);
+			this.viewLayout();
+		},
+		viewLayout : function () {
+			var resultArray = [],
+				tableBodyChild = this.tableBody.children();
+			for (var key in this.sortArray) {
+				for (var i = 0; i < this.originArray.length; i++) {
+					if (this.sortArray[key] == this.originArray[i]) {
+						resultArray.push(i);
+					}
+				}
+			}
+			for (var key in resultArray) {
+				this.tableBody.children().last().after(tableBodyChild.eq(resultArray[key]));
+			}
+		}
+	};
+    $(function () {
+        sortTable.init();
+    });
+})(window, window.jQuery);
+</script>
+</div>
+</body>
+</html>
