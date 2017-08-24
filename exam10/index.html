@@ -134,13 +134,13 @@ button::-moz-focus-inner{padding:0;border:0}
 <script>
 (function (win, $) {
     'use strict';
-    win.stProject = win.stProject || {};
-    win.stProject.common = win.stProject.common || {};
+    win.exam = win.exam || {};
+    win.exam.common = win.exam.common || {};
 
-    var UTIL = win.stProject.common.util;
+    var UTIL = win.exam.common.util;
 
     // prototype 호출구문
-    win.stProject.MotionFunc = function (container, args) {
+    win.exam.MotionFunc = function (container, args) {
         var defParams = {
 			type : 'tab' // slide // fade
         };
@@ -149,7 +149,7 @@ button::-moz-focus-inner{padding:0;border:0}
         this.init();
     };
     // prototype 선언구문
-    win.stProject.MotionFunc.prototype = {
+    win.exam.MotionFunc.prototype = {
         init : function () {
             this.setElements();
 			this.initLayout();
@@ -166,15 +166,16 @@ button::-moz-focus-inner{padding:0;border:0}
 			this.btnNext = this.controlWrap.find('[class*=_btn] button').eq(1);
 			this.currentNum = this.controlWrap.find('[class*=_num] .current');
 			this.totalNum = this.controlWrap.find('[class*=_num] .total');
+			this.oldIdx = 0;
         },
 		initLayout : function () {
 			this.contItems.not('.active').hide();
 			this.currentIdx = this.tabWrap.find('.active').index();
 			this.contItems.eq(this.currentIdx).addClass('active').show();
 			if (this.totalNum.length) {
-				this.totalNum.get(0).innerHTML = this.contItems.length;
+				//this.totalNum.get(0).innerHTML = this.contItems.length;
+				this.totalNum.text(this.contItems.length);
 			}
-			this.oldIdx = this.currentIdx;
 			
 		},
 		bindEvents : function () {
@@ -184,52 +185,73 @@ button::-moz-focus-inner{padding:0;border:0}
 		},
 		tabClickFunc : function (e) {
 			var target = $(e.currentTarget);
-			this.oldIdx = this.currentIdx;
+			//this.oldIdx = this.currentIdx;
 			this.currentIdx = target.parent().index();
-			if(this.oldIdx !== this.currentIdx){
+			/*if(this.oldIdx !== this.currentIdx){
                 this.motionType(this.currentIdx);
-            }
+            }*/
+			this.motionType();
 		},
 		prevFunc : function () {
             this.currentIdx -= 1;
             if(this.currentIdx < 0){
                 this.currentIdx = this.tabItems.length - 1;
             }
-            this.motionType(this.currentIdx);
+            this.motionType();
         },
         nextFunc : function () {
             this.currentIdx += 1;
             if(this.currentIdx >= this.tabItems.length){
                 this.currentIdx = 0;
             }
-            this.motionType(this.currentIdx);
+            this.motionType();
         },
-		motionType : function (idx) {
+		motionType : function () {
+			console.log(this.oldIdx,this.currentIdx)
 			this.tabItems.eq(this.oldIdx).removeClass('active');
-			this.tabItems.eq(idx).addClass('active');
+			this.tabItems.eq(this.currentIdx).addClass('active');
 
 			switch (this.opts.type) {
 				case 'fade' :
 					this.contItems.eq(this.oldIdx).fadeOut().removeClass('active');
-					this.contItems.eq(idx).fadeIn().addClass('active').show();
+					this.contItems.eq(this.currentIdx).fadeIn().addClass('active').show();
 					break;
 
 				case 'tab' :
 					this.contItems.eq(this.oldIdx).removeClass('active');
-					this.contItems.eq(idx).addClass('active').show();
-					this.currentNum.get(0).innerHTML = idx+1;
+					this.contItems.eq(this.currentIdx).addClass('active').show();
+					//this.currentNum.get(0).innerHTML = idx+1;
+					this.currentNum.text(this.currentIdx+1);
 					break;
 
 				case 'slide' :
-					this.contItems.eq(idx).css({
-						'display':'block','left':'100%'}).stop().animate({
-            			'left' : 0
-					}).addClass('active');
+					this.contItems.eq(this.currentIdx).css('left','100%').show().animate({
+						'left' : 0
+					});
 					this.contItems.eq(this.oldIdx).animate({
 						'left' : '-100%'
+					}, function(){
+						$(this).hide();
+					});
+					/*this.contItems.eq(this.oldIdx).stop().animate({
+						'left' : '-100%'
+					},function(){
+						$(this).hide().css('left','');
+					});
+					this.contItems.eq(idx).stop().animate({
+						left: 0
+					});*/
+					/*var direction = function (dr1,dr2) {
+					}
+					this.contItems.eq(idx).css({
+						'left':'100%','display':'block'}).stop().animate({
+            			'right' : 0
+					}).addClass('active');
+					this.contItems.eq(this.oldIdx).animate({
+						'right' : '-100%'
 					},function(){
 						$(this).hide();
-					}).removeClass('active');
+					}).removeClass('active');*/
 					break;
 			}
 
@@ -243,8 +265,8 @@ button::-moz-focus-inner{padding:0;border:0}
     };
 
     $(function () {
-        win.projectMotionFunc = new win.stProject.MotionFunc('.cast_box');
-        win.projectMotionFunc = new win.stProject.MotionFunc('.slide_box', {type : 'slide'});
+        win.projectMotionFunc = new win.exam.MotionFunc('.cast_box');
+        win.projectMotionFunc = new win.exam.MotionFunc('.slide_box', {type : 'slide'});
     });
 })(window, window.jQuery);
 </script>

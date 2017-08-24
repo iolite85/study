@@ -1,10 +1,10 @@
 (function (win, $, doc) {
     'use strict';
-    win.stProject = win.stProject || {};
+    win.exam = win.exam || {};
 
     var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-    win.stProject.common = (function () {
+    win.exam.common = (function () {
         return {
             customEvent : {
                 PAGEIS : {
@@ -120,9 +120,9 @@
         }
     })();
 
-    var CST_EVENT = win.stProject.common.customEvent;
+    var CST_EVENT = win.exam.common.customEvent;
 
-    win.stProject.page = (function () {
+    win.exam.page = (function () {
         return {
             init : function () {
                 this.bindEvents();
@@ -139,6 +139,6 @@
     })();
 
     $(function () {
-        win.stProject.page.init();
+        win.exam.page.init();
     });
 })(window, window.jQuery, window.document);
