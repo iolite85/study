@@ -170,13 +170,29 @@ button::-moz-focus-inner{padding:0;border:0}
         },
 		initLayout : function () {
 			this.contItems.not('.active').hide();
+			this.contItems.filter('.active').addClass('active').show();
 			this.currentIdx = this.tabWrap.find('.active').index();
-			this.contItems.eq(this.currentIdx).addClass('active').show();
 			if (this.totalNum.length) {
 				//this.totalNum.get(0).innerHTML = this.contItems.length;
 				this.totalNum.text(this.contItems.length);
 			}
-			
+			this.initHash();
+		},
+		initHash : function () {
+			if (location.hash == '') {
+				return false;
+			}
+			var currentHash = location.hash;
+			this.currentIdx = this.contWrap.find(currentHash).index();
+			console.log(this.currentIdx)
+			if (this.currentIdx > 0 ) {
+				this.motionType();
+			}
+			//
+		},
+		checkHash : function () {
+			var currentHash = this.contItems.eq(this.currentIdx).attr('id');
+			location.hash = '#' + currentHash;
 		},
 		bindEvents : function () {
 			this.tabBtn.on('click', $.proxy(this.tabClickFunc, this));
@@ -184,12 +200,10 @@ button::-moz-focus-inner{padding:0;border:0}
 			this.btnNext.on('click', $.proxy(this.nextFunc, this));
 		},
 		tabClickFunc : function (e) {
+			e.preventDefault();
 			var target = $(e.currentTarget);
-			//this.oldIdx = this.currentIdx;
 			this.currentIdx = target.parent().index();
-			/*if(this.oldIdx !== this.currentIdx){
-                this.motionType(this.currentIdx);
-            }*/
+			if(this.currentIdx === this.oldIdx){return false};
 			this.motionType();
 		},
 		prevFunc : function () {
@@ -207,9 +221,9 @@ button::-moz-focus-inner{padding:0;border:0}
             this.motionType();
         },
 		motionType : function () {
-			console.log(this.oldIdx,this.currentIdx)
-			this.tabItems.eq(this.oldIdx).removeClass('active');
 			this.tabItems.eq(this.currentIdx).addClass('active');
+			this.tabItems.eq(this.oldIdx).removeClass('active');
+			this.checkHash();
 
 			switch (this.opts.type) {
 				case 'fade' :
@@ -225,40 +239,19 @@ button::-moz-focus-inner{padding:0;border:0}
 					break;
 
 				case 'slide' :
-					this.contItems.eq(this.currentIdx).css('left','100%').show().animate({
+					this.contItems.eq(this.currentIdx).css({'display':'block','left':'100%'}).stop().animate({
 						'left' : 0
-					});
+					}).addClass('active');;
 					this.contItems.eq(this.oldIdx).animate({
 						'left' : '-100%'
 					}, function(){
 						$(this).hide();
-					});
-					/*this.contItems.eq(this.oldIdx).stop().animate({
-						'left' : '-100%'
-					},function(){
-						$(this).hide().css('left','');
-					});
-					this.contItems.eq(idx).stop().animate({
-						left: 0
-					});*/
-					/*var direction = function (dr1,dr2) {
-					}
-					this.contItems.eq(idx).css({
-						'left':'100%','display':'block'}).stop().animate({
-            			'right' : 0
-					}).addClass('active');
-					this.contItems.eq(this.oldIdx).animate({
-						'right' : '-100%'
-					},function(){
-						$(this).hide();
-					}).removeClass('active');*/
+					}).removeClass('active');
 					break;
 			}
 
 			this.oldIdx = this.currentIdx;
 
-			
-			
 		}
 
 		
