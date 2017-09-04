@@ -206,7 +206,7 @@ var cloneArray = array.slice();
 > - 네비게이션의 href 값을 가진 id값이 페이지 내에 있는지부터 체크 한 후 반환
 > - 스크롤이 끝났을 때 한번만 실행되게 clearTimeout()을 사용
 > - [clearTimeout()](https://www.w3schools.com/jsref/met_win_cleartimeout.asp): setTimeout()으로 실행 한 함수를 멈출때 사용
-> - 1~3, 3~1번으로 이동 시 2가 활성화 되면 안되기 때문에 scroll이 끝나면 anchor를 활성화
+> - 1번에서 3번 또는 3번에서 1번 컨테이너로 이동 시 2가 활성화 되면 안되기 때문에 scroll이 끝나면 anchor를 활성화
 ```javascript
 ...
 scrollFunc : function () {
@@ -223,6 +223,5 @@ scrollFunc : function () {
 - Mobile: navigation outside 구현
 > Point
 > - 반응형 type 체크 (중요)
-> - resize()
 > - 모바일, pc 일때 각각의 이벤트가 실행되도록 해줌 (불필요한 이벤트 발생 막음)
 > - UTIL.isSupportTransform 으로 반응형 지원 여부 체크하여 이벤트 발생 (반응형을 지원하지 않으면 pc 이벤트만 발생시킴)
